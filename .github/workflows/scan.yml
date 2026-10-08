@@ -1,4 +1,4 @@
-name: secret-and-pii-scan
+name: CI
 
 on:
   push:

@@ -7,7 +7,7 @@
 A [Claude Code](https://docs.claude.com/en/docs/claude-code) skill that sets up your new Mac over Wi-Fi,<br>
 one checked step at a time.
 
-[![Scan](https://github.com/arafathusayn/mac-migration-skill/actions/workflows/scan.yml/badge.svg)](https://github.com/arafathusayn/mac-migration-skill/actions/workflows/scan.yml)
+[![CI](https://github.com/arafathusayn/mac-migration-skill/actions/workflows/scan.yml/badge.svg)](https://github.com/arafathusayn/mac-migration-skill/actions/workflows/scan.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 
 </div>
