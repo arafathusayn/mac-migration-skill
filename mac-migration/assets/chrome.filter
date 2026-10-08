@@ -1,0 +1,37 @@
+# rsync filter for ~/Library/Application Support/Google/Chrome/ (all profiles). Also fits Brave
+# (~/Library/Application Support/BraveSoftware/Brave-Browser/). Copy only while the browser is quit.
+# Keeps everything that holds sessions and user data: Local State, Cookies (Network/Cookies), Login Data,
+# Web Data, Preferences, Secure Preferences, Bookmarks, History, Extensions + settings, Local Storage,
+# IndexedDB, WebStorage, File System, Service Worker (incl. CacheStorage/ScriptCache), Sessions.
+# Skips only caches and downloadable components the browser rebuilds.
+
+# never copy between machines
+- /Singleton*
+- /RunningChromeVersion
+- /Crashpad/
+- /BrowserMetrics*
+- /Crash Reports/
+
+# downloadable components and on-device models
+- /segmentation_platform/
+- /component_crx_cache/
+- /extensions_crx_cache/
+- /SODALanguagePacks/
+- /SODA/
+- /optimization_guide_model_store/
+- /OptGuideOnDeviceModel/
+- /OnDeviceHeadSuggestModel/
+- /WasmTtsEngine/
+- /Safe Browsing/
+
+# caches (any level, every profile)
+- Cache/
+- Code Cache/
+- GPUCache/
+- GraphiteDawnCache/
+- DawnGraphiteCache/
+- DawnWebGPUCache/
+- ShaderCache/
+- GrShaderCache/
+- optimization_guide_model_store/
+- .DS_Store

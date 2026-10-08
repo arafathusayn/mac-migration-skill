@@ -1,0 +1,14 @@
+# rsync filter for ~/Downloads/: copy everything except installers that can be downloaded again.
+# Check archives by content before excluding them (`unzip -l file.zip | head`): many .zip files are data.
+- *.dmg
+- *.pkg
+- *.mpkg
+- *.exe
+- *.msi
+- *.apk
+- *.iso
+- *.AppImage
+- *.app/
+- .DS_Store
+# app-installer zips identified by name, e.g.:
+# - /SomeApp-arm64.zip

@@ -1,0 +1,12 @@
+#!/bin/sh
+# Blocks a commit that would add secrets (gitleaks) or personal information (tools/pii_scan.py).
+# Enable once per clone:  git config core.hooksPath .githooks
+set -e
+if ! command -v gitleaks >/dev/null 2>&1; then
+  echo "pre-commit: gitleaks is not installed (brew install gitleaks); refusing to commit unscanned changes." >&2
+  exit 1
+fi
+echo "pre-commit: gitleaks (staged changes)"
+gitleaks git --staged --redact --no-banner --config .gitleaks.toml .
+echo "pre-commit: PII scan (staged files)"
+python3 tools/pii_scan.py --staged

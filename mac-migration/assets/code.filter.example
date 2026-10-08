@@ -1,0 +1,39 @@
+# rsync filter for the code folder (source root = ~/code/ or wherever repos live).
+# Copies every repo as-is (uncommitted changes, untracked .env files, stashes, unpushed branches, repos
+# without a remote) and skips only dependency/build folders git does not track.
+# Before using a line, confirm in every repo that `git ls-files` shows nothing under that name.
+- node_modules/
+- .next/
+- .turbo/
+- .venv/
+- __pycache__/
+- target/
+- .gradle/
+- build/
+- dist/
+- .output/
+- storybook-static/
+- .pnpm-store/
+- .svelte-kit/
+- .cache/
+- DerivedData/
+
+# installers and packaged apps that can be downloaded or rebuilt
+- *.exe
+- *.dmg
+- *.pkg
+- *.msi
+- *.apk
+- *.aab
+- *.ipa
+- *.AppImage
+- *.deb
+- *.rpm
+- *.iso
+
+# git worktrees the person chose to skip (rescue real uncommitted work first; then `git worktree prune`)
+# - /<repo>/worktrees/
+# - .<orchestrator>/*/wt/
+
+# large media inside a repo: exclude by extension, never the whole folder (it may hold tracked files)
+# - /<repo>/courses/**.mp4

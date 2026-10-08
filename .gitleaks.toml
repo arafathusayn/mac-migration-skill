@@ -1,0 +1,11 @@
+# gitleaks configuration: the default rule set, plus allowlisted public identifiers used in the docs.
+title = "mac-migration-skill"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Public, non-secret identifiers that appear in documentation"
+regexes = [
+  '''EQHXZ8M8AV''',  # Google LLC's Apple Developer team id (public; used to scope Chrome's keychain item)
+]

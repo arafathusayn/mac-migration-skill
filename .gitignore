@@ -1,0 +1,7 @@
+# private PII deny-list: terms you never want published (kept local on purpose)
+.pii-denylist
+# skill-creator / eval scratch space
+*-workspace/
+*.skill
+.DS_Store
+__pycache__/

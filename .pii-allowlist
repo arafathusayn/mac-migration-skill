@@ -1,0 +1,8 @@
+# Regular expressions for spans the PII scan may ignore (one per line). Keep this list tiny.
+# The repository's own public URL (its owner handle is necessarily public):
+github\.com/arafathusayn/mac-migration-skill
+arafathusayn/mac-migration-skill
+# Documentation placeholders and technical names that only look like e-mail addresses:
+user@host\.local
+[A-Za-z0-9-]+@openssh\.com
+postgresql@NN\b[\w.-]*

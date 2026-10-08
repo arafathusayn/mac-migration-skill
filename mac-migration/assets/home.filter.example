@@ -1,0 +1,56 @@
+# rsync filter for the home-folder pass (source root = $HOME/). Copy everything EXCEPT what is listed.
+# Usage: rsync -a --no-specials --no-devices --filter='merge home.filter' ~/ "$NEW_MAC:~/"
+# First match wins: put "+" (keep) lines before the "-" (skip) lines they carve out of.
+# Adapt to the person's decisions; dry-run with --stats to show size and file count before copying.
+
+# --- handled by other phases (code, Library, personal folders, staging)
+- /code/
+- /Library/
+- /Desktop/
+- /Documents/
+- /Downloads/
+- /Pictures/
+- /Movies/
+- /Music/
+- /Public/
+- /Applications/
+- /mac-migration/
+
+# --- the new Mac's authorized_keys holds the migration key; live agent sockets are not copyable
+- /.ssh/authorized_keys
+- /.ssh/agent/
+
+# --- caches and rebuildable data
+- /.Trash/
++ /.cache/
+# keep any runtime a config points into, e.g.:
+# + /.cache/<tool>-runtimes/
+# + /.cache/<tool>-runtimes/<current>/
+# - /.cache/<tool>-runtimes/*
+- /.cache/*
+- /.npm/_cacache/
+- /.npm/_logs/
+- /.bun/install/cache/
+- /.nvm/.cache/
+- /.cargo/registry/
+- /.cargo/git/
+- /.rustup/downloads/
+- /.rustup/tmp/
+- /.yarn/berry/cache/
+- /.pulumi/plugins/
+- /.vscode/extensions/
+- /.vscode-insiders/extensions/
+- /.vscode-server/
+- /.cursor/extensions/
+- /.zcompdump*
+- .DS_Store
+
+# --- keep only the CURRENT version of self-updating tools (re-check before every sync!)
+# + /.local/share/claude/versions/<current-version>
+# - /.local/share/claude/versions/*
+
+# --- optional, per the person's decisions
+# Docker data:            - /.docker/
+# AI models:              - /.ollama/models/   - /.lmstudio/models/   - /.cache/huggingface/
+# Android / Java / iOS:   + /.android/   + /.android/*.jks   + /.android/debug.keystore   - /.android/**
+#                         - /.gradle/   - /.m2/   - /.konan/   - /.cocoapods/   - /.swiftpm/

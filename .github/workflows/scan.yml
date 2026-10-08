@@ -1,0 +1,32 @@
+name: secret-and-pii-scan
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0   # gitleaks scans the full history
+
+      - name: Install gitleaks 8.30.1 (checksum-verified)
+        run: |
+          set -euo pipefail
+          V=8.30.1
+          base="https://github.com/gitleaks/gitleaks/releases/download/v${V}"
+          curl -sSfLO "${base}/gitleaks_${V}_linux_x64.tar.gz"
+          curl -sSfLO "${base}/gitleaks_${V}_checksums.txt"
+          grep "gitleaks_${V}_linux_x64.tar.gz" "gitleaks_${V}_checksums.txt" | sha256sum -c -
+          tar xzf "gitleaks_${V}_linux_x64.tar.gz" gitleaks
+
+      - name: gitleaks (full history)
+        run: ./gitleaks git --redact --no-banner --config .gitleaks.toml .
+
+      - name: PII scan (generic detectors; the private deny-list is never committed)
+        run: python3 tools/pii_scan.py
