@@ -1,29 +1,52 @@
-# mac-migration — a Claude Code skill for moving to a new Mac
+<div align="center">
 
-A [Claude Code](https://docs.claude.com/en/docs/claude-code) skill that migrates a whole working
-environment from an old Mac to a new one as a **clean setup driven over SSH** — without dragging along
-hundreds of gigabytes of caches, and without losing the things Migration Assistant and dotfile repos
-usually miss.
+# mac-migration
 
-It was distilled from a real migration of a busy developer Mac. Every pitfall in it actually happened.
+**Move to a new Mac without losing a thing.**
 
-## What it handles
+A [Claude Code](https://docs.claude.com/en/docs/claude-code) skill that sets up your new Mac over Wi-Fi,<br>
+one checked step at a time.
 
-- **Inventory** of the old Mac (read-only): Homebrew, apps by source, toolchains, repos with work that
-  exists nowhere else, keychain-held logins, launch agents, databases, system-level config, iCloud state.
-- **Connecting** two Macs without a TTY: SSH keys, native password dialogs, `sudo` over SSH (including
-  Homebrew's environment stripping), openrsync quirks, throughput.
-- **Home folder and toolchains** with one filtered rsync; version pins for self-updating CLIs; broken-link checks.
-- **Homebrew** bundle (casks, App Store, apps without a cask), disabled casks and pkg installers.
-- **Code**: copy repos instead of re-cloning (uncommitted work, stashes, `.env` files, keys), safe
-  exclusions verified against git, worktrees, and a repo-state diff that proves both Macs match.
-- **Secrets**: what moves as files, what lives only in the local keychain, moving single keychain items safely.
-- **Browsers**: Chrome/Brave profiles **with live sessions** (the Safe Storage key must exist before first launch).
-- **Databases and services**: consistent SQLite snapshots, Homebrew Postgres/Redis with row-count proofs,
-  single-instance services that must never run on both Macs.
-- **macOS settings**: a researched list of what is safe to copy with `defaults`, and what must be set by hand.
-- **Personal data**: iCloud Desktop & Documents, encrypted APFS volumes.
-- **Final sync and cleanup**: reviewed `--delete`, verification, moving services, removing migration access.
+[![Scan](https://github.com/arafathusayn/mac-migration-skill/actions/workflows/scan.yml/badge.svg)](https://github.com/arafathusayn/mac-migration-skill/actions/workflows/scan.yml)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+
+</div>
+
+<br>
+
+## Why
+
+Migration Assistant copies everything, including years of junk.
+A dotfiles repo copies too little.
+This skill sits in the middle.
+
+Claude looks at your old Mac first and asks what you want to keep.
+Then it builds the new Mac for you and checks its own work.
+
+It comes from a real move of a busy developer Mac.
+Every warning in it is something that really went wrong.
+
+## What it moves
+
+| | |
+|:--|:--|
+| 🍺 **Apps** | Homebrew and App Store apps, plus a to-do list for the rest |
+| 🏠 **Home folder** | Dotfiles, shell setup, tool configs and fonts |
+| 💻 **Code** | Every repo as it is, with uncommitted work, stashes and `.env` files |
+| 🔑 **Secrets** | SSH keys, plus keychain logins moved one by one |
+| 🌐 **Browsers** | Chrome profiles that stay logged in |
+| 🗄️ **Databases** | SQLite, Postgres and Redis, copied safely and checked |
+| ⚙️ **Settings** | Only the macOS settings that are safe to copy |
+| 📁 **Your files** | Desktop, Documents, Downloads and encrypted disks |
+
+## How it works
+
+1. **Look.** Claude scans the old Mac. It changes nothing.
+2. **Ask.** You decide what moves and what stays behind.
+3. **Connect.** The old Mac talks to the new one over SSH.
+4. **Copy.** Apps, files, code, secrets, browsers and databases.
+5. **Prove.** Checksums, file counts and git diffs show both Macs match.
+6. **Switch.** One last sync. Then clean up and move in.
 
 ## Install
 
@@ -33,30 +56,52 @@ mkdir -p ~/.claude/skills
 ln -s ~/src/mac-migration-skill/mac-migration ~/.claude/skills/mac-migration
 ```
 
-Then, in Claude Code on the **old** Mac, say something like:
+## Use
 
-> I just got a new MacBook Pro on the same Wi-Fi. Help me move everything over — Homebrew, my dotfiles,
-> my code, SSH keys, and keep me logged in to Chrome.
+Put both Macs on the same network.
+Turn on **Remote Login** on the new Mac (System Settings → General → Sharing).
+Then open Claude Code on your **old** Mac and say:
 
-## Safety model
+> I got a new MacBook. It's on the same Wi-Fi. Help me move everything over.
 
-- Claude runs on the old Mac and changes the new Mac over SSH; the old Mac stays the untouched source of truth.
-- Passwords, tokens and keys never appear in the chat: they go through a native macOS dialog and SSH stdin.
-- Every step ends with evidence (checksums, file counts, git-state diffs, row counts).
-- Nothing personal is skipped without the person's explicit decision.
+Claude will guide you from there.
 
-Read `mac-migration/SKILL.md` and `mac-migration/references/pitfalls.md` before using it on a machine you care about.
+## Safe by design
 
-## Repository hygiene: secrets and PII scanning
+- **Your old Mac stays the source of truth.** Nothing on it gets deleted.
+- **Passwords stay out of the chat.** You type them into a macOS dialog.
+- **Every step ends with proof,** not a promise.
+- **Nothing personal is skipped** unless you say so.
 
-This repo is public, so every commit is scanned:
+> [!TIP]
+> Read [the pitfalls](mac-migration/references/pitfalls.md) before you start. It is a short list of what went wrong last time.
 
-- **gitleaks** (secrets) and **`tools/pii_scan.py`** (e-mail and IP/MAC addresses, real home paths, `.local`
-  host names, phone numbers, plus a private deny-list) run in a pre-commit hook and in GitHub Actions.
-- Enable the hook in your clone: `git config core.hooksPath .githooks` (needs `brew install gitleaks`).
-- Put personal terms you never want committed (names, employers, project names, handles) in
-  `.pii-denylist` at the repo root, one per line. It is git-ignored on purpose.
-- Run manually: `gitleaks dir . --redact --config .gitleaks.toml` and `python3 tools/pii_scan.py`.
+## What's inside
+
+```
+mac-migration/
+├── SKILL.md       the plan Claude follows
+├── references/    one guide for each step
+├── scripts/       helpers to copy, check and prove
+└── assets/        example rsync filters
+```
+
+## Contributing
+
+This repo is public, so every commit is scanned for secrets and personal info.
+Turn on the check in your clone:
+
+```bash
+brew install gitleaks
+git config core.hooksPath .githooks
+```
+
+The hook runs [gitleaks](https://github.com/gitleaks/gitleaks) and a small PII scanner.
+GitHub Actions runs both again on every push.
+
+Want to block your own names or project names?
+Add them to `.pii-denylist`, one per line.
+Git ignores that file, so it never leaves your Mac.
 
 ## License
 
