@@ -30,14 +30,14 @@ Every warning in it is something that really went wrong.
 
 | | |
 |:--|:--|
-| 🍺 **Apps** | Homebrew and App Store apps, plus a to-do list for the rest |
-| 🏠 **Home folder** | Dotfiles, shell setup, tool configs and fonts |
-| 💻 **Code** | Every repo as it is, with uncommitted work, stashes and `.env` files |
-| 🔑 **Secrets** | SSH keys, plus keychain logins moved one by one |
-| 🌐 **Browsers** | Chrome profiles that stay logged in |
-| 🗄️ **Databases** | SQLite, Postgres and Redis, copied safely and checked |
-| ⚙️ **Settings** | Only the macOS settings that are safe to copy |
-| 📁 **Your files** | Desktop, Documents, Downloads and encrypted disks |
+| ⌘ **Apps** | Homebrew and App Store apps, plus a to-do list for the rest |
+| ⌂ **Home folder** | Dotfiles, shell setup, tool configs and fonts |
+| ‹/› **Code** | Every repo as it is, with uncommitted work, stashes and `.env` files |
+| ◈ **Secrets** | SSH keys, plus keychain logins moved one by one |
+| ◎ **Browsers** | Chrome profiles that stay logged in |
+| ≣ **Databases** | SQLite, Postgres and Redis, copied safely and checked |
+| ⌥ **Settings** | Only the macOS settings that are safe to copy |
+| ❐ **Your files** | Desktop, Documents, Downloads and encrypted disks |
 
 ## How it works
 
@@ -68,10 +68,10 @@ Claude will guide you from there.
 
 ## Safe by design
 
-- **Your old Mac stays the source of truth.** Nothing on it gets deleted.
-- **Passwords stay out of the chat.** You type them into a macOS dialog.
-- **Every step ends with proof,** not a promise.
-- **Nothing personal is skipped** unless you say so.
+✓ **Your old Mac stays the source of truth.** Nothing on it gets deleted.<br>
+✓ **Passwords stay out of the chat.** You type them into a macOS dialog.<br>
+✓ **Every step ends with proof,** not a promise.<br>
+✓ **Nothing personal is skipped** unless you say so.
 
 > [!TIP]
 > Read [the pitfalls](mac-migration/references/pitfalls.md) before you start. It is a short list of what went wrong last time.
